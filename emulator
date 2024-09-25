@@ -1,0 +1,32 @@
+#!/usr/bin/python3
+from zipfile import ZipFile
+import sys
+
+
+user_name = sys.argv[1]
+path_to_arxiv = sys.argv[2]
+path_to_script = sys.argv[3]
+
+with ZipFile(path_to_arxiv,"a") as zip:
+    while True:     
+        pwd ='/'
+        command = input(user_name + '$ ')
+        if command == 'exit':
+            break
+            zip.close()
+        elif command == 'uname':
+            print(user_name)
+        elif command.split()[0] == 'mkdir':
+            new_folder_name = command.split()[1]+ '/'
+            zip.writestr(new_folder_name, '')
+        elif command == 'ls' :
+            dirs = zip.namelist()
+            if(not(dirs)):
+                for dir in zip.infolist():
+                   print(dir)
+        elif command.split()[0] == 'cd':
+            print('uuuuuuuh I cant do this for now')
+        else: 
+            print('error: unknown command')
+
+
