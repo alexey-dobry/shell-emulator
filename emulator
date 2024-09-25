@@ -11,22 +11,24 @@ with ZipFile(path_to_arxiv,"a") as zip:
     while True:     
         pwd ='/'
         command = input(user_name + '$ ')
-        if command == 'exit':
-            break
-            zip.close()
-        elif command == 'uname':
-            print(user_name)
-        elif command.split()[0] == 'mkdir':
-            new_folder_name = command.split()[1]+ '/'
-            zip.writestr(new_folder_name, '')
-        elif command == 'ls' :
-            dirs = zip.namelist()
-            if(not(dirs)):
-                for dir in zip.infolist():
-                   print(dir)
-        elif command.split()[0] == 'cd':
-            print('uuuuuuuh I cant do this for now')
-        else: 
-            print('error: unknown command')
+        if command != '':
+            if command == 'exit':
+                break
+                zip.close()
+            elif command == 'uname':
+                print(user_name)
+            elif command.split()[0] == 'mkdir':
+                new_folder_name = command.split()[1]+ '/'
+                zip.writestr(new_folder_name, '')
+            elif command == 'ls' :
+                for element in zip.namelist() :
+                    if(element.endswith('/')):
+                        print('dir: ' + element[0:-1])
+                    else:
+                        print('file: ' + element)
+            elif command.split()[0] == 'cd':
+                print('uuuuuuuh I cant do this for now')
+            else: 
+                print('error: unknown command')
 
 
