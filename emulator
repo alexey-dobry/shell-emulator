@@ -2,14 +2,16 @@
 from zipfile import ZipFile
 import sys
 
-
 user_name = sys.argv[1]
 path_to_arxiv = sys.argv[2]
 path_to_script = sys.argv[3]
 
+pwd='/'
+pre_pwd='/'
+
 with ZipFile(path_to_arxiv,"a") as zip:
-    while True:     
-        pwd ='/'
+    while True:
+        list_of_elements = zip.namelist()
         command = input(user_name + '$ ')
         if command != '':
             if command == 'exit':
@@ -18,17 +20,30 @@ with ZipFile(path_to_arxiv,"a") as zip:
             elif command == 'uname':
                 print(user_name)
             elif command.split()[0] == 'mkdir':
-                new_folder_name = command.split()[1]+ '/'
+                if(pwd =='/'):
+                    new_folder_name = command.split()[1]+ '/'
+                else:
+                    new_folder_name = pwd[1:] + '/' + command[1] + '/'
+                    print(new_folder_name)
                 zip.writestr(new_folder_name, '')
             elif command == 'ls' :
-                for element in zip.namelist() :
+                for element in list_of_elements:
                     if(element.endswith('/')):
                         print('dir: ' + element[0:-1])
                     else:
                         print('file: ' + element)
             elif command.split()[0] == 'cd':
-                print('uuuuuuuh I cant do this for now')
+                commands = command.split()
+                if(len(commands) == 2):
+                    if(commands[1] == '..' and pwd != '/'):
+                        pwd = pre_pwd
+                        pre_pwd = '/'.join(pwd.split()[0:-2])
+                    elif(commands[1]+'/' in list_of_elements):
+                        pre_pwd = pwd
+                        pwd += commands[1]
+                    else: 
+                        print('error: no such directory')
+            elif command == 'pwd':
+                print(pwd)
             else: 
                 print('error: unknown command')
-
-
