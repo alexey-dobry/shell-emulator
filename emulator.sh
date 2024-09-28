@@ -25,7 +25,8 @@ with ZipFile(path_to_arxiv,"a") as zip:
                     if(pwd =='/'):
                         new_folder_name = command.split()[1]+ '/'
                     else:
-                        new_folder_name = pwd[1:] + '/' + commands[1] + '/'
+                        new_folder_name = pwd[1:-1] + '/' + commands[1] + '/'
+                        print(new_folder_name)
                     zip.writestr(new_folder_name, '')
             elif command == 'ls' :
                 for element in list_of_elements:
@@ -38,14 +39,15 @@ with ZipFile(path_to_arxiv,"a") as zip:
                 commands = command.split()
                 if(len(commands) == 2):
                     if(commands[1] == '..' and pwd != '/'):
+                        temp = pwd
                         pwd = pre_pwd
-                        pre_pwd = '/'.join(pwd.split('/')[0:-2])
+                        pre_pwd = '/'.join(temp.split('/')[0:-2]) + '/'
                     elif(commands[1]+'/' in list_of_elements or (len(pwd) > 1 and pwd[1:] + commands[1] + '/' in list_of_elements)):
                         pre_pwd = pwd
                         pwd = pwd + commands[1] +'/'
                     else: 
                         print('error: no such directory')
             elif command == 'pwd':
-                print(pwd)
+              print(pwd)
             else: 
                 print('error: unknown command')
