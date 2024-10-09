@@ -1,0 +1,10 @@
+ls
+mkdir new_folder
+cd new_folder
+mkdir content
+ls
+pwd
+cd /
+ls
+uname
+exit
