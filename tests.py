@@ -38,6 +38,10 @@ class TestShellEmulator(unittest.TestCase):
         """Тест команды uname с опцией -a"""
         result = self._capture_output(self.emulator.uname, ["-a"])
         self.assertIn("Linux some_buddy 5.15.0-1-generic x86_64 GNU/Linux\n", result)  # Проверяем вывод с опцией -a
+    def test_uname_with_bad_flag(self):
+        """Тест команды uname с неправильным флагом"""
+        result = self._capture_output(self.emulator.uname, ["-cheeseburger"])
+        self.assertIn("No such flag",result)
 
     def test_cd_nonexistent_directory(self):
         """Тест ошибки при переходе в несуществующую директорию"""
@@ -45,17 +49,22 @@ class TestShellEmulator(unittest.TestCase):
         self.assertIn("No such file or directory", result)  # Проверяем, что выводится сообщение об ошибке
     
     def test_mkdir_in_root(self):
-        """Тест создания директории в корневой директории"""
+        """Тест mkdir в корневой директории"""
         self.emulator.mkdir(["2_directory"])
         result = self._capture_output(self.emulator.ls, [])
         self.assertIn('2_directory', result) # Проверяем, что в выводе ls появилась созданная директория
     
     def test_mkdir_in_folder(self):
-        """Тест создания директории в другой директории"""
+        """Тест mkdir в другой директории"""
         self.emulator.cd(["new_folder"])
         self.emulator.mkdir(["another_dir"])
         result = self._capture_output(self.emulator.ls, [])
         self.assertIn('another_dir',result) # Проверяем, что в выводе ls появилась созданная директория
+    
+    def test_mkdir_bad_name(self):
+        """Тест mkdir с недопустимым названием"""
+        result = self._capture_output(self.emulator.mkdir, ['/'])
+        self.assertIn('Name is not allowed',result)
 
     def test_exit(self):
         """Тест команды exit"""

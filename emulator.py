@@ -71,13 +71,19 @@ class ShellEmulator:
             print("Linux")
         elif args[0] == "-a":
             print(f"Linux {self.user_name} 5.15.0-1-generic x86_64 GNU/Linux")
+        else:
+            print("No such flag")
+
     def mkdir(self,args):
         folder_name = args[0]
-        if self.cwd == '/':
-            path = folder_name + '/'
-        else:
-            path = self.cwd[1:] + folder_name + '/'
-        self.virtual_sys_folder.writestr(path, '')
+        if(folder_name.count('/') == 0):
+            if self.cwd == '/':
+                path = folder_name + '/'
+            else:
+                path = self.cwd[1:] + folder_name + '/'
+            self.virtual_sys_folder.writestr(path, '')
+        else: 
+            print("Name is not allowed")
     def pwd(self):
         print(self.cwd)
     def run(self):
