@@ -5,7 +5,7 @@ from emulator import ShellEmulator
 class TestShellEmulator(unittest.TestCase):
     def setUp(self):
         """Подготовка перед каждым тестом"""
-        self.emulator = ShellEmulator(user_name="some_buddy",path_to_arxiv="./file_system.zip", path_to_script=None)
+        self.emulator = ShellEmulator(user_name="some_buddy",path_to_arxiv="./file.zip", path_to_script=None)
 
     def test_ls_root(self):
         """Тест команды ls в корневой директории"""

@@ -58,10 +58,18 @@ class ShellEmulator:
             return
 
     def ls(self,args):
-        list_of_paths = self.virtual_sys_folder.namelist()
-        for path in list_of_paths:
-            if( self.cwd == '/' + path[0:len(self.cwd) - 1] and self.cwd.count('/') == path.count('/')):
-                print(path[len(self.cwd) - 1: path.rfind('/')])
+        if len(args) == 1:
+            prev_cwd = self.cwd
+            self.cd(args)
+            self.ls([])
+            self.cd(prev_cwd)
+        elif len(args) == 0:
+            list_of_paths = self.virtual_sys_folder.namelist()
+            for path in list_of_paths:
+                if( self.cwd == '/' + path[0:len(self.cwd) - 1] and self.cwd.count('/') == path.count('/')):
+                    print(path[len(self.cwd) - 1: path.rfind('/')])
+        else: 
+            print("Error: wrong option/s")
     def exit(self):
         print("Bye!")
         self.virtual_sys_folder.close()
